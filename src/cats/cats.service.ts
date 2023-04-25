@@ -19,7 +19,20 @@ export class CatsService {
     return this.catModel.find().exec();
   }
 
-  async findOne(id: number): Promise<Cat> {
+  async findOne(id: string): Promise<Cat> {
     return this.catModel.findById(id).exec();
   }
+
+  async update(id: string, updateCatDto: CreateCatDto): Promise<Cat> {
+    return this.catModel.findByIdAndUpdate(id, updateCatDto, { new: true }).exec();
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.catModel.findByIdAndRemove(id).exec();
+  }
+
+  async patch(id: string, partialCatDto: Partial<CreateCatDto>): Promise<Cat> {
+    return this.catModel.findByIdAndUpdate(id, partialCatDto, { new: true }).exec();
+  }
+
 }
