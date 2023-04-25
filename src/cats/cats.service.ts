@@ -2,12 +2,18 @@ import { Model } from 'mongoose';
 import { Injectable, Inject } from '@nestjs/common';
 import { Cat } from './interfaces/cat.interface';
 import { CreateCatDto } from './dto/create-cat.dto';
+import { Race } from 'src/race/interfaces/race.interface';
+import { Name } from 'src/name/interfaces/name.interface';
 
 @Injectable()
 export class CatsService {
   constructor(
     @Inject('CAT_MODEL')
     private catModel: Model<Cat>,
+    @Inject('RACE_MODEL')
+    private raceModel: Model<Race>,
+    @Inject('NAME_MODEL')
+    private nameModel: Model<Name>
   ) {}
 
   async create(createCatDto: CreateCatDto): Promise<Cat> {
@@ -33,6 +39,13 @@ export class CatsService {
 
   async patch(id: string, partialCatDto: Partial<CreateCatDto>): Promise<Cat> {
     return this.catModel.findByIdAndUpdate(id, partialCatDto, { new: true }).exec();
+  }
+
+  async getNewCat(){
+    const racesArr = this.raceModel.find().exec();
+    const namesArr = this.nameModel.find().exec();
+    console.log(racesArr, namesArr)
+    return racesArr
   }
 
 }

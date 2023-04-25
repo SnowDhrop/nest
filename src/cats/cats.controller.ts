@@ -16,6 +16,15 @@ import { Cat as CatEntity } from './entities/cat.entity';
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
+  @Get('capture-cat')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Get a new cat !' })
+  @ApiResponse({ status: 200, description: 'Deleted.' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  async getNewCat(@Body() createCatDto: CreateCatDto): Promise<Cat> {
+    return this.catsService.create(createCatDto);
+  }
+
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create cat' })
@@ -89,5 +98,5 @@ export class CatsController {
     @Body() partialCatDto: Partial<CreateCatDto>,
   ): Promise<Cat> {
     return this.catsService.patch(id, partialCatDto);
-  }
+  }  
 }
